@@ -1,3 +1,5 @@
+library(rstanarm)
+
 d = read_tsv('out/results.tsv')
 
 d$predicted_p_scaled = scale(d$predicted_p)
@@ -12,6 +14,8 @@ d |>
 
 ggsave('ikpreds.png', dpi = 900, width = 3, height = 3)
 
-glm1 = glm(cbind(freq1,freq2) ~ predicted_p_scaled, data = d, family = binomial)
+glm1 = stan_glm(cbind(freq1,freq2) ~ predicted_p_scaled, data = d, family = binomial, cores = 4, chains = 4)
 
-broom::tidy(glm1, conf.int = T)
+
+broom.mixed::tidy(glm1, conf.int = T)
+performance::r2(glm1)

@@ -136,7 +136,7 @@ end
 distance_dict = CSV.read("out/segment_similarity.tsv", DataFrame; delim='\t')
 
 # load df w/ words
-words = CSV.read("out/forms.tsv", DataFrame; delim='\t')
+words = CSV.read("source/forms.tsv", DataFrame; delim='\t')
 
 # words is the unique values of the lemma column in words as String
 words = unique(String.(words.lemma))

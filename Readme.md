@@ -250,7 +250,7 @@ The results show that similarity to existing words (that have varying rates of -
 
 If you use JANET in your research, please cite:
 
-[![DOI](https://zenodo.org/badge/1119018640.svg)](https://doi.org/10.5281/zenodo.17980463)
+https://doi.org/10.5281/zenodo.17980463
 
 ```bibtex
 @software{racz_janet_2025,

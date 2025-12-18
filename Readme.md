@@ -238,7 +238,7 @@ The repo includes a worked example using Hungarian verbal morphology. Some Hunga
 - `source/forms.tsv`: Word list for aligner
 - `script/krr.R`: Kernel ridge regression predicting participant choices in a forced-choice task based on webcorpus frequencies
 
-The results show that similarity to existing words (that have varying rates of -k/-m preference) predicts nonword preference for -k/-m (Conditional R2: 0.567 (95% CI [0.501, 0.627])). In reality, this is likely weighted by real word frequency, but similarity to types is a useful first application. 
+The results show that similarity to existing words (that have varying rates of -k/-m preference) predicts nonword preference for -k/-m (Conditional R2: 0.567 (95% CI [0.501, 0.627])). In reality, this is likely weighted by real word frequency, but similarity to types is a useful first approximation. 
 
 ![if similar real words prefer -k, the nonword also prefers -k](ikpreds.png "KRR predictions on nonwords")
 

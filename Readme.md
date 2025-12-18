@@ -298,9 +298,13 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## References
 
+Albright, Adam, and Bruce Hayes. "Rules vs. analogy in English past tenses: A computational/experimental study." Cognition 90, no. 2 (2003): 119-161.
+
 Frisch, Stefan A., Janet B. Pierrehumbert, and Michael B. Broe. "Similarity avoidance and the OCP." *Natural Language & Linguistic Theory* 22, no. 1 (2004): 179-228.
 
 Dawdy-Hesterberg, Lisa Garnand, and Janet Breckenridge Pierrehumbert. "Learnability and generalisation of Arabic broken plural nouns." *Language, Cognition and Neuroscience* 29, no. 10 (2014): 1268-1282.
+
+Siptár, Péter, and Miklós Törkenczy. The phonology of Hungarian. OUP Oxford, 2000.
 
 Rácz, Péter, Clay Beckner, Jennifer B. Hay, and Janet B. Pierrehumbert. "Morphological convergence as on-line lexical analogy." *Language* 96, no. 4 (2020): 735-770.
 

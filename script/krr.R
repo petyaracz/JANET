@@ -1,7 +1,6 @@
-setwd('~/Github/phonkrr/')
+setwd('~/Github/JANET/')
 
 library(tidyverse)
-library(broom)
 
 # Kernel ridge regression function
 trainKRR = function(sigma, alpha, train_matrix, test_matrix, target){

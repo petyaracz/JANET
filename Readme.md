@@ -7,6 +7,23 @@ A toolkit for computing phonologically-informed word similarity and predicting m
 [![DOI](https://zenodo.org/badge/1119018640.svg)](https://doi.org/10.5281/zenodo.17980463)
 
 
+## Quick start
+```bash
+julia run_janet.jl <feature_matrix.tsv> <word_list.tsv>
+```
+
+The script validates inputs, copies them to `source/`, and runs the full pipeline. Output is written to `out/`.
+
+**Example using Hungarian data:**
+```bash
+julia run_janet.jl ex/siptar_torkenczy_toth_racz_hungarian.tsv ex/input.tsv
+```
+
+This produces:
+- `out/segment_similarity.tsv` — pairwise segment similarities
+- `out/aligned_word_pairs_phonological_distance.tsv.gz` — pairwise word distances
+
+To fit kernel ridge regression on the output, see `script/krr.R`.
 
 ## Overview
 

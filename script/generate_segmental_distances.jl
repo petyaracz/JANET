@@ -252,7 +252,7 @@ end
 # -- execute -- #
 
 # Load CSV with custom parsing to handle empty cells as missing
-feature_matrix = CSV.read("source/siptar_torkenczy_toth_racz_hungarian.tsv", DataFrame; 
+feature_matrix = CSV.read("source/features.tsv", DataFrame; 
     delim='\t',
     missingstring="",  # Treat empty strings as missing
     types=Dict(

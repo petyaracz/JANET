@@ -2,6 +2,8 @@
 
 A toolkit for computing phonologically-informed word similarity and predicting morphological variation.
 
+[![DOI](https://zenodo.org/badge/1119018640.svg)](https://doi.org/10.5281/zenodo.17980463)
+
 ## Overview
 
 This toolkit allows the user to estimate nonword behaviour based on the behaviour of similar existing words. We take a segmental feature matrix and use this to calculate similarity between segments using natural classes (Frisch, Pierrehumbert & Broe 2004). We then use this segmental similarity matrix to calculate similarity between words in a list (Dawdy-Hesterberg & Pierrehumbert 2014). The resulting phonological similarity will reflect the concept that "pat" is more similar to "bat" than to "hat", even though the Levenshtein distance is the same. We can then use the word similarity matrix to put nonwords into categories (classification) or predict how much they will do X (regression), based on the behaviour of existing words (Rácz, Beckner, Hay & Pierrehumbert 2020).
@@ -238,7 +240,7 @@ The repo includes a worked example using Hungarian verbal morphology. Some Hunga
 - `source/forms.tsv`: Word list for aligner
 - `script/krr.R`: Kernel ridge regression predicting participant choices in a forced-choice task based on webcorpus frequencies
 
-The results show that similarity to existing words (that have varying rates of -k/-m preference) predicts nonword preference for -k/-m (Conditional R2: 0.567 (95% CI [0.501, 0.627])). In reality, this is likely weighted by real word frequency, but similarity to types is a useful first application. 
+The results show that similarity to existing words (that have varying rates of -k/-m preference) predicts nonword preference for -k/-m (Conditional R2: 0.567 (95% CI [0.501, 0.627])). In reality, this is likely weighted by real word frequency, but similarity to types is a useful first approximation. 
 
 ![if similar real words prefer -k, the nonword also prefers -k](ikpreds.png "KRR predictions on nonwords")
 
@@ -248,7 +250,7 @@ The results show that similarity to existing words (that have varying rates of -
 
 If you use JANET in your research, please cite:
 
-<!-- TODO: Zenodo DOI will go here after first release -->
+https://doi.org/10.5281/zenodo.17980463
 
 ```bibtex
 @software{racz_janet_2025,

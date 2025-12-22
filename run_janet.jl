@@ -20,7 +20,7 @@ info(msg) = println("$(GREEN)→$(NC) $msg")
 
 function usage()
     println("""
-    Usage: julia run_janet.jl <feature_matrix.tsv> <word_list.tsv>
+    Usage: julia run_janet.jl <feature_matrix.tsv> <word_list.tsv> [output]
 
     Arguments:
       feature_matrix.tsv  Tab-separated file with segment features
@@ -31,9 +31,14 @@ function usage()
                           If no header present, 'lemma' will be added
                           Words must use same alphabet as feature matrix
 
+      output              (Optional) Output path. Can be:
+                          - A directory: writes word_distances.tsv.gz there
+                          - A file path: writes to that file
+                          - Omitted: writes to out/ in script directory
+
     Output:
-      out/segment_similarity.tsv                            Pairwise segment similarities
-      out/aligned_word_pairs_phonological_distance.tsv.gz   Pairwise word distances
+      segment_similarity.tsv                    Pairwise segment similarities (in out/)
+      word_distances.tsv.gz                     Pairwise word distances
     """)
     exit(1)
 end
@@ -117,15 +122,38 @@ end
 
 function main()
     # Check arguments
-    length(ARGS) == 2 || usage()
+    (length(ARGS) < 2 || length(ARGS) > 3) && usage()
     
     feature_matrix_path = ARGS[1]
     word_list_path = ARGS[2]
+    
+    # Handle output path
+    if length(ARGS) == 3
+        output_arg = ARGS[3]
+        if isdir(output_arg) || endswith(output_arg, "/") || endswith(output_arg, "\\")
+            # It's a directory
+            mkpath(output_arg)
+            output_path = joinpath(output_arg, "word_distances.tsv.gz")
+        else
+            # It's a file path
+            mkpath(dirname(output_arg))
+            output_path = output_arg
+        end
+        user_specified_output = true
+    else
+        output_path = nothing  # Will be set after script_dir is determined
+        user_specified_output = false
+    end
     
     # Get script directory
     script_dir = dirname(@__FILE__)
     if isempty(script_dir)
         script_dir = "."
+    end
+    
+    # Set default output path if not specified
+    if !user_specified_output
+        output_path = joinpath(script_dir, "out", "aligned_word_pairs_phonological_distance.tsv.gz")
     end
     
     # Check required files exist
@@ -166,13 +194,26 @@ function main()
     info("Computing word distances...")
     run(`julia $align_script`)
     
+    # Move output to user-specified location if needed
+    default_output = joinpath(script_dir, "out", "aligned_word_pairs_phonological_distance.tsv.gz")
+    if user_specified_output && output_path != default_output
+        cp(default_output, output_path; force=true)
+        info("Word distances written to: $output_path")
+    end
+    
     # Done
     println()
     println("$(GREEN)Done!$(NC)")
     println()
     println("Output files:")
     println("  out/segment_similarity.tsv")
-    println("  out/aligned_word_pairs_phonological_distance.tsv.gz")
+    if user_specified_output
+        println("  $output_path")
+    else
+        println("  out/aligned_word_pairs_phonological_distance.tsv.gz")
+        println()
+        println("$(YELLOW)Tip:$(NC) You can specify a custom output path as the third argument.")
+    end
     println()
     println("To use with kernel ridge regression, see script/krr.R")
 end

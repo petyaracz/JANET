@@ -9,10 +9,10 @@ A toolkit for computing phonologically-informed word similarity and predicting m
 
 ## Quick start
 ```bash
-julia run_janet.jl <feature_matrix.tsv> <word_list.tsv>
+julia run_janet.jl <feature_matrix.tsv> <word_list.tsv> [path to output]
 ```
 
-The script validates inputs, copies them to `source/`, and runs the full pipeline. Output is written to `out/`.
+The script validates inputs, copies them to `source/`, and runs the full pipeline. Output is written to `out/`. If you specify a third argument, word distances will be written there.
 
 **Example using Hungarian data:**
 ```bash

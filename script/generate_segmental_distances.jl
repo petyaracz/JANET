@@ -252,26 +252,28 @@ end
 # -- execute -- #
 
 # Load CSV with custom parsing to handle empty cells as missing
+# First, read the header to discover column names
+header_df = CSV.read("source/features.tsv", DataFrame; delim='\t', limit=0)
+column_names = names(header_df)
+
+# Build types dictionary dynamically:
+# - First column (segment) is String
+# - All other columns (features) are Union{Int, Missing}
+types_dict = Dict{Symbol, Type}()
+for col_name in column_names
+    col_symbol = Symbol(col_name)
+    if col_symbol == :segment
+        types_dict[col_symbol] = String
+    else
+        types_dict[col_symbol] = Union{Int, Missing}
+    end
+end
+
+# Now read the full file with the dynamically constructed types
 feature_matrix = CSV.read("source/features.tsv", DataFrame; 
     delim='\t',
     missingstring="",  # Treat empty strings as missing
-    types=Dict(
-        :segment => String,
-        :cons => Union{Int, Missing},
-        :son => Union{Int, Missing},
-        :cont => Union{Int, Missing},
-        :labial => Union{Int, Missing},
-        :coronal => Union{Int, Missing},
-        :anterior => Union{Int, Missing},
-        :dorsal => Union{Int, Missing},
-        :lateral => Union{Int, Missing},
-        :voice => Union{Int, Missing},
-        :delrel => Union{Int, Missing},
-        :seg => Union{Int, Missing},
-        :long => Union{Int, Missing},
-        :open1 => Union{Int, Missing},
-        :open2 => Union{Int, Missing}
-    )
+    types=types_dict
 )
 
 # Extract segments, features, and matrix

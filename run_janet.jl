@@ -215,7 +215,6 @@ function main()
         println("$(YELLOW)Tip:$(NC) You can specify a custom output path as the third argument.")
     end
     println()
-    println("To use with kernel ridge regression, see script/krr.R")
 end
 
 main()

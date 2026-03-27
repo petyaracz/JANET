@@ -23,7 +23,7 @@ This produces:
 - `out/segment_similarity.tsv` — pairwise segment similarities
 - `out/aligned_word_pairs_phonological_distance.tsv.gz` — pairwise word distances
 
-To fit kernel ridge regression on the output, see `script/krr.R`.
+To fit kernel ridge regression on the output, go [here](https://github.com/petyaracz/KRR).
 
 ## Overview
 
@@ -33,8 +33,6 @@ This toolkit allows the user to estimate nonword behaviour based on the behaviou
 
 - Julia 1.12+
 - Julia packages: `CSV`, `DataFrames`
-- R 4.0+ (for KRR example only)
-- R packages: `tidyverse` (for KRR example only)
 
 ## Installation
 
@@ -58,9 +56,6 @@ julia script/generate_segmental_distances.jl
 
 # 2. Align words and compute pairwise distances
 julia script/phonological_distance_between_words.jl
-
-# 3. (Optional) Fit kernel ridge regression
-Rscript script/krr.R
 ```
 
 Input files are in `source/`, output files are written to `out/`.
@@ -249,7 +244,7 @@ Currently hardcoded. A segment pair not found in the distance matrix defaults to
 
 ### Step 3: Kernel ridge regression (example)
 
-The `krr.R` script demonstrates how to use the word distance matrix to predict morphological behaviour. This is provided as an example; users may prefer other methods (SVM, nearest-neighbour classification, etc.).
+see [here](https://github.com/petyaracz/KRR)
 
 ---
 
@@ -259,11 +254,6 @@ The repo includes a worked example using Hungarian verbal morphology. Some Hunga
 
 - `source/siptar_torkenczy_toth_racz_hungarian.tsv`: Segmental feature matrix for Hungarian
 - `source/forms.tsv`: Word list for aligner
-- `script/krr.R`: Kernel ridge regression predicting participant choices in a forced-choice task based on webcorpus frequencies
-
-The results show that similarity to existing words (that have varying rates of -k/-m preference) predicts nonword preference for -k/-m (Conditional R2: 0.567 (95% CI [0.501, 0.627])). In reality, this is likely weighted by real word frequency, but similarity to types is a useful first approximation. 
-
-![if similar real words prefer -k, the nonword also prefers -k](ikpreds.png "KRR predictions on nonwords")
 
 ---
 

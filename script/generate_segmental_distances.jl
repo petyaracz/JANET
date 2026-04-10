@@ -311,9 +311,15 @@ inventory = SegmentInventory(segments, features, matrix)
 # Generate all natural classes
 classes = generate_natural_classes(inventory)
 
-# Print them to see what we got
-for nc in classes
-    print_natural_class(nc)
+# Print them to see what we got and write to log file
+open("out/log_natural_classes.txt", "w") do io
+    for nc in classes
+        spec_str = join(["$feat=$val" for (feat, val) in nc.spec.features], ", ")
+        members_str = join(sort(collect(nc.members)), ", ")
+        line = "[$spec_str] → {$members_str}"
+        println(line)
+        println(io, line)
+    end
 end
 
 # Calculate similarity

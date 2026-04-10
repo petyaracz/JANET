@@ -207,6 +207,8 @@ function main()
     println()
     println("Output files:")
     println("  out/segment_similarity.tsv")
+    println("  out/log_natural_classes.txt")
+    println("  out/log_word_alignment.tsv")
     if user_specified_output
         println("  $output_path")
     else

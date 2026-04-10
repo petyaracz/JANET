@@ -154,9 +154,9 @@ results_df = DataFrame(results)
 log_df = DataFrame(
     word1 = results_df.word1,
     word2 = results_df.word2,
-    segment1 = [join(s, ",") for s in results_df.segment1],
-    segment2 = [join(s, ",") for s in results_df.segment2],
-    dist = [join(d, ",") for d in results_df.dist],
+    segment1 = [join(s, "|") for s in results_df.segment1],
+    segment2 = [join(s, "|") for s in results_df.segment2],
+    dist = [join(d, "|") for d in results_df.dist],
     phon_dist = results_df.phon_dist,
     length = results_df.length
 )

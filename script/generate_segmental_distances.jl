@@ -22,45 +22,6 @@ end
 
 # -- functions -- #
 
-"""
-Generate all possible feature specifications (non-empty subsets of features).
-For each feature, we can specify it as 1, 0, or leave it unspecified.
-"""
-function generate_all_feature_specs(feature_names::Vector{String})
-    # For each feature: include as +, include as -, or omit
-    # This generates 3^n - 1 possibilities (excluding the empty spec)
-    specs = FeatureSpec[]
-    
-    n_features = length(feature_names)
-    
-    # Generate all combinations: 3^n total (including empty)
-    # We'll represent each as a base-3 number
-    for i in 1:(3^n_features - 1)  # -1 to exclude empty spec (all omitted)
-        spec_dict = Dict{String, Int}()
-        
-        # Convert i to base-3 representation
-        num = i
-        for (feat_idx, feat_name) in enumerate(feature_names)
-            choice = num % 3  # 0 = omit, 1 = specify as 0, 2 = specify as 1
-            num = div(num, 3)
-            
-            if choice == 1
-                spec_dict[feat_name] = 0
-            elseif choice == 2
-                spec_dict[feat_name] = 1
-            end
-            # choice == 0: omit (don't add to dict)
-        end
-        
-        # Only add non-empty specs
-        if !isempty(spec_dict)
-            push!(specs, FeatureSpec(spec_dict))
-        end
-    end
-    
-    return specs
-end
-
 
 """
 Find which segments match a feature specification.
@@ -120,22 +81,85 @@ function remove_redundant_classes(classes::Vector{NaturalClass})
 end
 
 """
-Generate all natural classes from an inventory.
+Generate all natural classes from an inventory using intersection closure.
+
+Instead of enumerating all 3^n feature specifications (which is infeasible for
+large feature sets), this algorithm computes all natural-class member sets
+directly from the segment inventory.
+
+For each feature and value (0 or 1) we compute a "basic cut": the set of
+segments that carry that feature value.  The natural classes are exactly all
+non-empty intersections of basic cuts (the intersection closure).  The closure
+is bounded by 2^|segments|, which is tractable even for 27+ features.
+
+For each member set in the closure we derive the canonical FeatureSpec: the most
+specific spec whose members equal that set (i.e. every feature on which the set
+is uniformly non-missing valued).
 """
 function generate_natural_classes(inventory::SegmentInventory)
-    specs = generate_all_feature_specs(inventory.features)
-    classes = NaturalClass[]
-    
-    for spec in specs
-        members = find_members(spec, inventory)
-        if !isempty(members)  # only keep non-empty classes
-            push!(classes, NaturalClass(spec, members))
+    n_segs = length(inventory.segments)
+    n_feats = length(inventory.features)
+
+    # Build basic cuts: one BitVector per (feature, value) pair.
+    basic_cuts = BitVector[]
+    for f_idx in 1:n_feats
+        for v in [0, 1]
+            cut = falses(n_segs)
+            for s_idx in 1:n_segs
+                val = inventory.matrix[s_idx, f_idx]
+                if !ismissing(val) && val == v
+                    cut[s_idx] = true
+                end
+            end
+            if any(cut)
+                push!(basic_cuts, cut)
+            end
         end
     end
-    
-    # Remove redundant classes (proper supersets with same members)
-    classes = remove_redundant_classes(classes)
-    
+
+    # Compute the intersection closure of all basic cuts.
+    # The queue holds newly discovered sets that still need to be intersected
+    # with every basic cut.  When the queue empties, no new sets can arise.
+    closed = Set{BitVector}(basic_cuts)
+    queue  = copy(basic_cuts)
+    while !isempty(queue)
+        C = pop!(queue)
+        for B in basic_cuts
+            I = C .& B
+            if any(I) && I ∉ closed
+                push!(closed, I)
+                push!(queue, I)
+            end
+        end
+    end
+
+    # For each member set derive its canonical FeatureSpec: include a feature
+    # only when every segment in the set carries the same non-missing value.
+    classes = NaturalClass[]
+    for member_bits in closed
+        members = Set{String}(
+            inventory.segments[i] for i in 1:n_segs if member_bits[i]
+        )
+
+        spec_dict = Dict{String, Int}()
+        for f_idx in 1:n_feats
+            vals = [inventory.matrix[s_idx, f_idx]
+                    for s_idx in 1:n_segs if member_bits[s_idx]]
+            non_missing = filter(!ismissing, vals)
+            if length(non_missing) == length(vals)
+                first_val = non_missing[1]
+                if all(==(first_val), non_missing)
+                    spec_dict[inventory.features[f_idx]] = first_val
+                end
+            end
+        end
+
+        # Skip classes with an empty spec (no distinguishing features).
+        if !isempty(spec_dict)
+            push!(classes, NaturalClass(FeatureSpec(spec_dict), members))
+        end
+    end
+
     return classes
 end
 

@@ -118,8 +118,8 @@ function generate_natural_classes(inventory::SegmentInventory)
     end
 
     # Compute the intersection closure of all basic cuts.
-    # Repeatedly intersect every known set with every basic cut; stop when
-    # no new non-empty sets are produced.
+    # The queue holds newly discovered sets that still need to be intersected
+    # with every basic cut.  When the queue empties, no new sets can arise.
     closed = Set{BitVector}(basic_cuts)
     queue  = copy(basic_cuts)
     while !isempty(queue)
@@ -146,7 +146,7 @@ function generate_natural_classes(inventory::SegmentInventory)
             vals = [inventory.matrix[s_idx, f_idx]
                     for s_idx in 1:n_segs if member_bits[s_idx]]
             non_missing = filter(!ismissing, vals)
-            if length(non_missing) == length(vals) && !isempty(non_missing)
+            if length(non_missing) == length(vals)
                 first_val = non_missing[1]
                 if all(==(first_val), non_missing)
                     spec_dict[inventory.features[f_idx]] = first_val

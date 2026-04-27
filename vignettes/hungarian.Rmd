@@ -1,0 +1,149 @@
+---
+title: "Hungarian morphological variation with JANET"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Hungarian morphological variation with JANET}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>"
+)
+```
+
+## Overview
+
+This vignette demonstrates JANET on Hungarian verbal morphology. Some Hungarian
+verbs vary between the suffixes *-k* and *-m* in the first-person singular
+indefinite (see Rácz & Lukács 2024). The intuition is that a novel verb will
+behave like its nearest phonological neighbours in the lexicon — verbs that are
+more similar to *-k* verbs will prefer *-k*; those closer to *-m* verbs will
+prefer *-m*.
+
+JANET computes the phonological distances that feed such an analogy model. Here
+we walk through the full pipeline and inspect the output.
+
+## Setup
+
+```{r load}
+library(janet)
+```
+
+Read the Hungarian segmental feature matrix and word list from the package's
+bundled data files.
+
+```{r read-data}
+features_path <- system.file("extdata", "hungarian_features.tsv", package = "janet")
+words_path    <- system.file("extdata", "hungarian_words.tsv",    package = "janet")
+
+features <- read.delim(features_path, encoding = "UTF-8", na.strings = "")
+words_df  <- read.delim(words_path,   encoding = "UTF-8")
+words     <- words_df$lemma
+```
+
+The feature matrix covers `r nrow(features)` Hungarian segments and
+`r ncol(features) - 1` binary distinctive features.
+
+```{r preview-features}
+head(features[, 1:6])
+```
+
+The word list contains `r length(words)` verb stems.
+
+```{r preview-words}
+head(words)
+```
+
+## Natural classes
+
+We can inspect the natural classes without running the full pipeline.
+
+```{r natural-classes}
+nc <- generate_natural_classes(features)
+nrow(nc)
+head(nc, 10)
+```
+
+`r nrow(nc)` natural classes are derived from the feature matrix.
+
+## Segment similarity
+
+```{r segment-similarity}
+seg_sim <- compute_segment_similarity(features, nc)
+nrow(seg_sim)
+```
+
+A few illustrative pairs — short vowels versus long counterparts, and voicing
+pairs among obstruents:
+
+```{r sim-examples}
+pairs <- data.frame(
+  s1 = c("a", "e", "p", "t", "k"),
+  s2 = c("á", "é", "b", "d", "g")
+)
+for (i in seq_len(nrow(pairs))) {
+  row <- seg_sim[seg_sim$segment1 == pairs$s1[i] & seg_sim$segment2 == pairs$s2[i], ]
+  cat(sprintf("sim(%s, %s) = %.3f\n", pairs$s1[i], pairs$s2[i], row$similarity))
+}
+```
+
+Short/long vowel pairs are highly similar (they differ on only a few features);
+voicing pairs among stops are moderately similar.
+
+## Full pipeline on a small subset
+
+Running the full 305-word matrix takes a minute. For illustration we use a
+20-word subset.
+
+```{r run-janet}
+set.seed(42)
+sample_words <- sample(words, 20)
+result <- run_janet(features, sample_words, gap_penalty = 1.0)
+```
+
+### Word distances
+
+```{r word-distances}
+head(result$word_distances[result$word_distances$word1 != result$word_distances$word2, ])
+```
+
+### Alignment log
+
+```{r alignment-log}
+head(result$alignment_log)
+```
+
+The `alignment1` and `alignment2` columns show the optimal segment-by-segment
+pairing; `distances` gives the per-position cost; `summed_distance` is the
+total phonological distance.
+
+## Nearest neighbours
+
+For each word we can find its closest phonological neighbour.
+
+```{r nearest-neighbours}
+library(dplyr)
+
+result$word_distances |>
+  filter(word1 != word2) |>
+  group_by(word1) |>
+  slice_min(phon_dist, n = 1L, with_ties = FALSE) |>
+  ungroup() |>
+  arrange(word1) |>
+  head(10)
+```
+
+## References
+
+Frisch, S. A., Pierrehumbert, J. B., & Broe, M. B. (2004). Similarity
+avoidance and the OCP. *Natural Language & Linguistic Theory*, 22(1), 179–228.
+
+Dawdy-Hesterberg, L. G., & Pierrehumbert, J. B. (2014). Learnability and
+generalisation of Arabic broken plural nouns. *Language, Cognition and
+Neuroscience*, 29(10), 1268–1282.
+
+Rácz, P., & Lukács, Á. (2024). Variation in the 1sg. indef: More than you
+wanted to know. *Acta Linguistica Academica*, 71(1–2), 2–17.

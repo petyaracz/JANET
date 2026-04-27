@@ -1,0 +1,28 @@
+Package: janet
+Type: Package
+Title: Joint Alignment and Nonparametric Estimation Toolkit
+Version: 0.1.0
+Authors@R: person("Péter", "Rácz", email = "petermartonracz@gmail.com",
+    role = c("aut", "cre"))
+Description: Computes phonologically-informed pairwise word distances using
+    natural class theory and Needleman-Wunsch alignment. Given a phonological
+    feature matrix and a list of words, janet derives segment similarity scores,
+    natural class definitions, and phonological distances between all word pairs.
+    Based on Frisch, Pierrehumbert & Broe (2004) and Dawdy-Hesterberg &
+    Pierrehumbert (2014).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    tibble
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    dplyr,
+    ggplot2
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+URL: https://github.com/petyaracz/JANET
+BugReports: https://github.com/petyaracz/JANET/issues

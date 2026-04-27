@@ -1,0 +1,10 @@
+^.*\.jl$
+^run_janet\.jl$
+^script$
+^source$
+^out$
+^ex$
+^ikpreds\.png$
+^Readme\.md$
+^README\.md$
+^\.github$

@@ -1,0 +1,171 @@
+[cont=0, cons=1, seg=1] → {b, c, d, g, k, m, n, p, t, č, ḏ, ṉ, ṯ}
+[coronal=0, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=1, open2=1, labial=1] → {ó}
+[cont=1, cons=0, seg=1] → {a, e, i, o, u, á, é, í, ó, ö, ú, ü, ő, ű}
+[coronal=1, cont=1, long=0, cons=0, seg=1, dorsal=0, labial=0] → {e, i}
+[coronal=0, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=1, open2=0, labial=1] → {u}
+[son=0, cont=1, coronal=1, voice=0, cons=1, seg=1] → {s, š}
+[son=0, cont=0, coronal=1, anterior=1, cons=1, seg=1] → {c, d, t, ṯ}
+[coronal=1, cons=1, seg=1] → {c, d, j, l, n, r, s, t, z, č, š, ž, ḏ, ṉ, ṯ}
+[coronal=1, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=0, open2=0, labial=1] → {ü}
+[son=1, coronal=1, anterior=1, cons=1, seg=1] → {l, n, r}
+[son=0, cont=0, coronal=1, delrel=0, anterior=1, cons=1, seg=1] → {d, t}
+[coronal=1, cont=0, voice=1, anterior=0, cons=1, seg=1] → {ḏ, ṉ}
+[coronal=0, cont=1, long=0, open1=1, cons=0, seg=1, dorsal=1, open2=1, labial=0] → {a}
+[cont=1, long=0, cons=0, seg=1] → {a, e, i, o, u, ö, ü}
+[son=0, cont=0, coronal=1, voice=0, anterior=1, cons=1, seg=1] → {c, t, ṯ}
+[son=0, cont=0, coronal=1, voice=0, delrel=0, anterior=1, cons=1, seg=1] → {t}
+[coronal=1, cont=1, long=0, cons=0, seg=1, dorsal=0] → {e, i, ö, ü}
+[son=0, coronal=1, voice=0, anterior=1, cons=1, seg=1] → {c, s, t, ṯ}
+[coronal=1, cont=1, open1=0, cons=0, seg=1, dorsal=0, open2=0, labial=0] → {i, í}
+[cont=1, long=0, open1=0, cons=0, seg=1] → {i, o, u, ö, ü}
+[son=0, cont=0, coronal=1, voice=0, delrel=1, anterior=1, cons=1, seg=1] → {c}
+[cont=1, long=0, open1=0, cons=0, seg=1, open2=0, labial=1] → {u, ü}
+[son=0, coronal=1, anterior=0, cons=1, seg=1] → {č, š, ž, ḏ}
+[cont=1, long=0, cons=0, seg=1, labial=0] → {a, e, i}
+[son=0, coronal=1, voice=1, anterior=1, cons=1, seg=1] → {d, z}
+[cont=1, long=1, open1=0, cons=0, seg=1] → {í, ó, ú, ő, ű}
+[cont=1, open1=0, cons=0, seg=1, labial=1] → {o, u, ó, ö, ú, ü, ő, ű}
+[coronal=1, cont=1, seg=1] → {e, i, j, l, r, s, z, é, í, ö, ü, ő, š, ű, ž}
+[son=1, coronal=1, anterior=0, cons=1, seg=1] → {j, ṉ}
+[coronal=1, cont=1, open1=0, cons=0, seg=1, dorsal=0, open2=0] → {i, í, ü, ű}
+[coronal=0, cont=1, cons=0, seg=1, dorsal=1] → {a, o, u, á, ó, ú}
+[coronal=1, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=0, open2=0, labial=0] → {i}
+[son=0, cont=0, voice=1, cons=1, seg=1, dorsal=1] → {g}
+[son=0, cont=1, coronal=1, voice=1, anterior=1, cons=1, seg=1] → {z}
+[coronal=0, cont=1, long=1, cons=0, seg=1, dorsal=1] → {á, ó, ú}
+[son=0, cont=1, coronal=1, anterior=1, cons=1, seg=1] → {s, z}
+[son=0, cont=0, cons=1, seg=1, dorsal=1] → {g, k}
+[cont=1, long=1, open1=0, cons=0, seg=1, labial=1] → {ó, ú, ő, ű}
+[son=0, coronal=1, voice=1, anterior=0, cons=1, seg=1] → {ž, ḏ}
+[son=1, coronal=1, cons=1, seg=1] → {j, l, n, r, ṉ}
+[coronal=1, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=0] → {i, ö, ü}
+[son=1, cont=1, coronal=1, cons=1, seg=1] → {j, l, r}
+[son=1, cont=0, coronal=1, voice=1, anterior=0, cons=1, seg=1] → {ṉ}
+[son=0, cont=1, cons=1, seg=1] → {f, h, s, z, š, ž}
+[son=1, cont=0, voice=1, cons=1, seg=1] → {m, n, ṉ}
+[son=1, cont=0, voice=1, cons=1, seg=1, labial=1] → {m}
+[coronal=1, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=0, open2=0] → {i, ü}
+[cont=1, open1=0, cons=0, seg=1, open2=1, labial=1] → {o, ó, ö, ő}
+[son=0, cons=1, seg=1, labial=1] → {b, f, p}
+[son=0, coronal=1, anterior=1, cons=1, seg=1] → {c, d, s, t, z, ṯ}
+[cont=1, long=1, cons=0, seg=1, open2=1] → {á, é, ó, ő}
+[coronal=1, cont=1, cons=1, seg=1] → {j, l, r, s, z, š, ž}
+[cont=1, open1=0, cons=0, seg=1] → {i, o, u, í, ó, ö, ú, ü, ő, ű}
+[cont=1, long=1, open1=0, cons=0, seg=1, open2=0] → {í, ú, ű}
+[coronal=1, cont=1, cons=0, seg=1, dorsal=0, open2=1] → {e, é, ö, ő}
+[cont=1, cons=1, seg=1, labial=1] → {f, v}
+[coronal=1, anterior=0, cons=1, seg=1] → {j, č, š, ž, ḏ, ṉ}
+[coronal=1, cont=0, voice=1, anterior=1, cons=1, seg=1] → {d, n}
+[coronal=1, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=0] → {í, ő, ű}
+[son=1, cont=1, coronal=1, anterior=1, cons=1, seg=1] → {l, r}
+[son=0, cont=0, coronal=1, anterior=0, cons=1, seg=1] → {č, ḏ}
+[coronal=0, cont=1, open1=0, cons=0, seg=1, dorsal=1, labial=1] → {o, u, ó, ú}
+[cont=1, long=0, open1=0, cons=0, seg=1, open2=0] → {i, u, ü}
+[cont=1, cons=1, seg=1] → {f, h, j, l, r, s, v, z, š, ž}
+[coronal=0, cont=1, cons=0, seg=1, dorsal=1, open2=1] → {a, o, á, ó}
+[cont=1, long=1, cons=0, seg=1, labial=0] → {á, é, í}
+[coronal=1, anterior=1, cons=1, seg=1] → {c, d, l, n, r, s, t, z, ṯ}
+[coronal=1, cont=1, anterior=0, cons=1, seg=1] → {j, š, ž}
+[cont=1, long=1, open1=0, cons=0, seg=1, open2=0, labial=1] → {ú, ű}
+[son=1, cont=0, coronal=1, voice=1, anterior=1, cons=1, seg=1] → {n}
+[coronal=1, cont=1, long=1, cons=0, seg=1, dorsal=0] → {é, í, ő, ű}
+[coronal=0, cont=1, long=1, open1=1, cons=0, seg=1, dorsal=1, open2=1, labial=0] → {á}
+[cons=1, seg=1, labial=1] → {b, f, m, p, v}
+[cont=1, long=0, cons=0, seg=1, open2=1] → {a, e, o, ö}
+[son=0, voice=1, cons=1, seg=1] → {b, d, g, z, ž, ḏ}
+[coronal=0, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=1, open2=0, labial=1] → {ú}
+[cont=1, open1=1, cons=0, seg=1, open2=1, labial=0] → {a, e, á, é}
+[coronal=1, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=0, labial=1] → {ő, ű}
+[son=0, cont=1, coronal=1, voice=1, anterior=0, cons=1, seg=1] → {ž}
+[coronal=1, cont=0, cons=1, seg=1] → {c, d, n, t, č, ḏ, ṉ, ṯ}
+[coronal=1, cont=1, open1=0, cons=0, seg=1, dorsal=0, open2=1, labial=1] → {ö, ő}
+[coronal=1, voice=1, cons=1, seg=1] → {d, n, z, ž, ḏ, ṉ}
+[son=0, cont=0, coronal=1, cons=1, seg=1] → {c, d, t, č, ḏ, ṯ}
+[son=0, coronal=1, voice=1, cons=1, seg=1] → {d, z, ž, ḏ}
+[cons=1, seg=1] → {b, c, d, f, g, h, j, k, l, m, n, p, r, s, t, v, z, č, š, ž, ḏ, ṉ, ṯ}
+[cont=1, seg=1] → {a, e, f, h, i, j, l, o, r, s, u, v, z, á, é, í, ó, ö, ú, ü, ő, š, ű, ž}
+[son=0, cont=0, voice=1, cons=1, seg=1, labial=1] → {b}
+[son=0, cont=0, voice=1, cons=1, seg=1] → {b, d, g, ḏ}
+[cont=1, long=0, open1=0, cons=0, seg=1, open2=1, labial=1] → {o, ö}
+[seg=1, dorsal=1] → {a, g, k, o, u, á, ó, ú}
+[son=0, cont=0, cons=1, seg=1, labial=1] → {b, p}
+[coronal=1, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=0, open2=1, labial=1] → {ő}
+[coronal=1, cont=0, voice=1, cons=1, seg=1] → {d, n, ḏ, ṉ}
+[cont=1, long=1, open1=1, cons=0, seg=1, open2=1, labial=0] → {á, é}
+[son=0, cont=0, coronal=1, voice=1, cons=1, seg=1] → {d, ḏ}
+[son=0, cont=0, cons=1, seg=1] → {b, c, d, g, k, p, t, č, ḏ, ṯ}
+[coronal=0, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=1, open2=1, labial=1] → {o}
+[coronal=1, cont=0, anterior=1, cons=1, seg=1] → {c, d, n, t, ṯ}
+[cont=1, voice=1, cons=1, seg=1] → {v, z, ž}
+[coronal=0, cont=1, long=1, cons=0, seg=1, dorsal=1, open2=1] → {á, ó}
+[son=0, coronal=1, cons=1, seg=1] → {c, d, s, t, z, č, š, ž, ḏ, ṯ}
+[son=0, cont=1, coronal=1, anterior=0, cons=1, seg=1] → {š, ž}
+[coronal=1, cont=1, open1=0, cons=0, seg=1, dorsal=0, labial=1] → {ö, ü, ő, ű}
+[coronal=0, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=1, labial=1] → {ó, ú}
+[son=1, cont=1, coronal=1, anterior=1, lateral=0, cons=1, seg=1] → {r}
+[coronal=0, cont=1, open1=0, cons=0, seg=1, dorsal=1, open2=0, labial=1] → {u, ú}
+[cont=1, voice=1, cons=1, seg=1, labial=1] → {v}
+[coronal=1, cont=1, long=1, cons=0, seg=1, dorsal=0, open2=1] → {é, ő}
+[son=0, cont=0, coronal=1, voice=1, anterior=0, cons=1, seg=1] → {ḏ}
+[seg=1] → {a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, r, s, t, u, v, z, á, é, í, ó, ö, ú, ü, č, ő, š, ű, ž, ḏ, ṉ, ṯ}
+[coronal=1, cont=1, long=0, cons=0, seg=1, dorsal=0, open2=1] → {e, ö}
+[coronal=0, cont=1, open1=1, cons=0, seg=1, dorsal=1, open2=1, labial=0] → {a, á}
+[cont=1, long=1, open1=0, cons=0, seg=1, open2=1, labial=1] → {ó, ő}
+[son=0, cont=1, voice=0, cons=1, seg=1, labial=1] → {f}
+[voice=1, cons=1, seg=1] → {b, d, g, m, n, v, z, ž, ḏ, ṉ}
+[cont=1, seg=1, labial=1] → {f, o, u, v, ó, ö, ú, ü, ő, ű}
+[son=0, cont=0, coronal=1, voice=0, delrel=1, anterior=0, cons=1, seg=1] → {č}
+[coronal=1, voice=1, anterior=0, cons=1, seg=1] → {ž, ḏ, ṉ}
+[son=0, voice=0, cons=1, seg=1, labial=1] → {f, p}
+[coronal=1, cont=1, long=0, open1=1, cons=0, seg=1, dorsal=0, open2=1, labial=0] → {e}
+[coronal=1, cont=1, cons=0, seg=1, dorsal=0] → {e, i, é, í, ö, ü, ő, ű}
+[coronal=0, cont=1, open1=0, cons=0, seg=1, dorsal=1, open2=1, labial=1] → {o, ó}
+[son=1, cont=1, coronal=1, anterior=1, lateral=1, cons=1, seg=1] → {l}
+[coronal=0, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=1, labial=1] → {o, u}
+[son=1, cons=1, seg=1] → {j, l, m, n, r, ṉ}
+[cont=1, open1=0, cons=0, seg=1, open2=0, labial=1] → {u, ú, ü, ű}
+[voice=1, cons=1, seg=1, labial=1] → {b, m, v}
+[cont=1, cons=0, seg=1, labial=0] → {a, e, i, á, é, í}
+[coronal=1, voice=1, anterior=1, cons=1, seg=1] → {d, n, z}
+[coronal=0, cont=1, long=0, cons=0, seg=1, dorsal=1, open2=1] → {a, o}
+[coronal=1, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=0, open2=0] → {í, ű}
+[coronal=1, cont=1, open1=1, cons=0, seg=1, dorsal=0, open2=1, labial=0] → {e, é}
+[son=1, cont=1, coronal=1, anterior=0, cons=1, seg=1] → {j}
+[son=0, coronal=1, voice=0, anterior=0, cons=1, seg=1] → {č, š}
+[seg=1, labial=1] → {b, f, m, o, p, u, v, ó, ö, ú, ü, ő, ű}
+[coronal=1, cont=1, anterior=1, cons=1, seg=1] → {l, r, s, z}
+[son=0, cont=1, voice=0, cons=1, seg=1] → {f, s, š}
+[coronal=1, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=0, open2=0, labial=0] → {í}
+[cont=1, long=0, open1=0, cons=0, seg=1, labial=1] → {o, u, ö, ü}
+[son=0, voice=0, cons=1, seg=1] → {c, f, k, p, s, t, č, š, ṯ}
+[coronal=1, seg=1] → {c, d, e, i, j, l, n, r, s, t, z, é, í, ö, ü, č, ő, š, ű, ž, ḏ, ṉ, ṯ}
+[coronal=1, cont=1, open1=0, cons=0, seg=1, dorsal=0] → {i, í, ö, ü, ő, ű}
+[son=0, cont=0, coronal=1, voice=1, delrel=0, anterior=1, cons=1, seg=1] → {d}
+[coronal=1, cont=0, anterior=0, cons=1, seg=1] → {č, ḏ, ṉ}
+[cont=1, long=1, cons=0, seg=1] → {á, é, í, ó, ú, ő, ű}
+[cont=1, long=0, open1=1, cons=0, seg=1, open2=1, labial=0] → {a, e}
+[coronal=1, cont=1, long=1, open1=0, cons=0, seg=1, dorsal=0, open2=0, labial=1] → {ű}
+[son=0, cont=0, coronal=1, voice=0, cons=1, seg=1] → {c, t, č, ṯ}
+[coronal=0, cont=1, long=0, cons=0, seg=1, dorsal=1] → {a, o, u}
+[coronal=1, cont=1, long=1, cons=0, seg=1, dorsal=0, labial=0] → {é, í}
+[son=0, cont=1, coronal=1, voice=1, cons=1, seg=1] → {z, ž}
+[coronal=1, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=0, open2=1, labial=1] → {ö}
+[son=1, cont=0, coronal=1, voice=1, cons=1, seg=1] → {n, ṉ}
+[son=0, cont=0, coronal=1, voice=0, delrel=1, cons=1, seg=1] → {c, č}
+[son=0, cont=0, voice=0, cons=1, seg=1, labial=1] → {p}
+[son=0, cont=0, voice=0, cons=1, seg=1] → {c, k, p, t, č, ṯ}
+[son=0, cont=1, coronal=1, voice=0, anterior=1, cons=1, seg=1] → {s}
+[cont=1, open1=0, cons=0, seg=1, open2=0] → {i, u, í, ú, ü, ű}
+[son=0, cont=0, voice=0, cons=1, seg=1, dorsal=1] → {k}
+[son=0, coronal=1, voice=0, cons=1, seg=1] → {c, s, t, č, š, ṯ}
+[coronal=1, cont=1, long=1, open1=1, cons=0, seg=1, dorsal=0, open2=1, labial=0] → {é}
+[coronal=1, cont=1, cons=0, seg=1, dorsal=0, labial=0] → {e, i, é, í}
+[son=0, cont=1, coronal=1, cons=1, seg=1] → {s, z, š, ž}
+[cont=1, cons=0, seg=1, open2=1] → {a, e, o, á, é, ó, ö, ő}
+[cont=0, voice=1, cons=1, seg=1] → {b, d, g, m, n, ḏ, ṉ}
+[coronal=1, cont=1, open1=0, cons=0, seg=1, dorsal=0, open2=0, labial=1] → {ü, ű}
+[cont=0, voice=1, cons=1, seg=1, labial=1] → {b, m}
+[son=0, cont=1, coronal=1, voice=0, anterior=0, cons=1, seg=1] → {š}
+[coronal=1, cont=1, long=0, open1=0, cons=0, seg=1, dorsal=0, labial=1] → {ö, ü}
+[son=0, cons=1, seg=1] → {b, c, d, f, g, h, k, p, s, t, z, č, š, ž, ḏ, ṯ}
+[cont=0, cons=1, seg=1, labial=1] → {b, m, p}

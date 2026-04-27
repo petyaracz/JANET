@@ -1,301 +1,151 @@
-# JANET: Joint Alignment and Nonparametric Estimation Toolkit
+# janet
 
-A toolkit for computing phonologically-informed word similarity and predicting morphological variation.
-
-
+**Joint Alignment and Nonparametric Estimation Toolkit**
 
 [![DOI](https://zenodo.org/badge/1119018640.svg)](https://doi.org/10.5281/zenodo.17980463)
 
+`janet` is an R package for computing phonologically-informed pairwise word
+distances. Given a binary phonological feature matrix and a list of words,
+it returns segment similarities, natural class definitions, and word-level
+phonological distances — the inputs needed for analogical models of
+morphological variation.
 
-## Quick start
-```bash
-julia run_janet.jl <feature_matrix.tsv> <word_list.tsv> [path to output]
-```
+## How it works
 
-The script validates inputs, copies them to `source/`, and runs the full pipeline. Output is written to `out/`. If you specify a third argument, word distances will be written there.
-
-**Example using Hungarian data:**
-```bash
-julia run_janet.jl ex/siptar_torkenczy_toth_racz_hungarian.tsv ex/input.tsv
-```
-
-This produces:
-- `out/segment_similarity.tsv` — pairwise segment similarities
-- `out/aligned_word_pairs_phonological_distance.tsv.gz` — pairwise word distances
-
-To fit kernel ridge regression on the output, go [here](https://github.com/petyaracz/KRR).
-
-## Overview
-
-This toolkit allows the user to estimate nonword behaviour based on the behaviour of similar existing words. We take a segmental feature matrix and use this to calculate similarity between segments using natural classes (Frisch, Pierrehumbert & Broe 2004). We then use this segmental similarity matrix to calculate similarity between words in a list (Dawdy-Hesterberg & Pierrehumbert 2014). The resulting phonological similarity will reflect the concept that "pat" is more similar to "bat" than to "hat", even though the Levenshtein distance is the same. We can then use the word similarity matrix to put nonwords into categories (classification) or predict how much they will do X (regression), based on the behaviour of existing words (Rácz, Beckner, Hay & Pierrehumbert 2020).
-
-## Requirements
-
-- Julia 1.12+
-- Julia packages: `CSV`, `DataFrames`
+1. **Natural classes** — all non-empty intersections of binary feature cuts are
+   enumerated via a BFS closure. Each class is described by the most specific
+   feature specification whose members equal that set (Frisch, Pierrehumbert &
+   Broe 2004).
+2. **Segment similarity** — `sim(s₁, s₂) = shared / (shared + non-shared)`,
+   where *shared* counts natural classes containing both segments.
+3. **Word alignment** — all unique word pairs are aligned with Needleman-Wunsch
+   dynamic programming using `1 − similarity` as the substitution cost
+   (Dawdy-Hesterberg & Pierrehumbert 2014).
 
 ## Installation
 
-```bash
-git clone https://github.com/petyaracz/JANET.git
-cd JANET
-```
-
-Install Julia dependencies:
-
-```julia
-using Pkg
-Pkg.add(["CSV", "DataFrames"])
+```r
+# install.packages("remotes")
+remotes::install_github("petyaracz/JANET")
 ```
 
 ## Quick start
 
-```bash
-# 1. Generate segment similarity matrix from features
-julia script/generate_segmental_distances.jl
+```r
+library(janet)
 
-# 2. Align words and compute pairwise distances
-julia script/phonological_distance_between_words.jl
+# Read your phonological feature matrix (segment col + binary feature cols)
+features <- read.delim("features.tsv", na.strings = "")
+
+# Supply a character vector of words
+words <- readLines("words.txt")
+
+# Run the full pipeline
+result <- run_janet(features, words, gap_penalty = 1.0)
 ```
 
-Input files are in `source/`, output files are written to `out/`.
+`run_janet()` returns a named list of four tibbles:
 
-## Pipeline
+| Name | Columns | Description |
+|------|---------|-------------|
+| `word_distances` | `word1`, `word2`, `phon_dist` | Pairwise phonological distances (symmetric, includes self = 0) |
+| `natural_classes` | `members`, `definition` | All derived natural classes |
+| `segment_similarity` | `segment1`, `segment2`, `similarity` | Pairwise segment similarities |
+| `alignment_log` | `word1`, `word2`, `alignment1`, `alignment2`, `distances`, `summed_distance` | Detailed alignment for every pair |
 
-1. Take segmental features
-2. Create segment similarity table
-3. Transcribe words into letter-to-sound alphabet and write them into an input file
-4. Use distance table and word list to align words
-5. Use distance table and outcome variable to fit kernel ridge regression
+## Example: toy inventory
 
----
+```r
+features <- data.frame(
+  segment = c("a", "b", "p"),
+  cons    = c(0L, 1L, 1L),
+  voice   = c(1L, 1L, 0L)
+)
 
-## Input/Output specifications
+result <- run_janet(features, c("ab", "ba", "pa"))
 
-### Step 1: Generate segmental distances
+result$natural_classes
+#> # A tibble: 5 × 2
+#>   members definition
+#>   <chr>   <chr>
+#> 1 a       [-cons, +voice]
+#> 2 b, p    [+cons]
+#> 3 a, b    [+voice]
+#> 4 p       [+cons, -voice]
+#> 5 b       [+cons, +voice]
 
-#### Input: Segment feature matrix
-
-A tab-separated file with the following structure:
-
-| Requirement | Detail |
-|-------------|--------|
-| Format | TSV (tab-delimited) |
-| Encoding | UTF-8 |
-| Header row | Required |
-| First column | Must be named `segment`; contains segment labels (phonemes) |
-| Remaining columns | Feature names; values are binary (0 or 1) or empty (missing) |
-
-**Segment column**
-
-- Each row represents one segment in the phonological inventory
-- Segment labels must be **single characters** (one Unicode codepoint, e.g., `a`, `ā`, `ʃ`, `N`)
-- Labels must be unique
-- Labels should match the transcription alphabet used in word forms
-
-Note: If your orthography uses digraphs (e.g., `ng`, `th`, `ch`), you must map these to single characters (e.g., `ng` → `N`, `th` → `θ`) before using JANET. This letter-to-sound preprocessing is your responsibility.
-
-**Feature columns**
-
-- Column names are feature labels (e.g., `cons`, `voice`, `labial`)
-- Cell values: `0`, `1`, or empty
-- Empty cells are treated as "not applicable" — the segment will not match any feature specification involving that feature
-- Features should be binary phonological features in the SPE or similar tradition
-
-**Example**
-
-```
-segment	cons	son	voice	labial	coronal
-p	1	0	0	1	0
-b	1	0	1	1	0
-t	1	0	0	0	1
-a	0		1	0	0
+result$word_distances
+#> # A tibble: 9 × 3
+#>   word1 word2 phon_dist
+#>   <chr> <chr>     <dbl>
+#> 1 ab    ab         0
+#> 2 ba    ba         0
+#> 3 pa    pa         0
+#> 4 ab    ba         1.5
+#> ...
 ```
 
-Here, vowel `a` has no value for `son` (sonority is not contrastive for vowels in this analysis), so it will not be grouped into natural classes defined by sonority.
+## Input format
 
-**Constraints**
+### Feature matrix
 
-- No duplicate segment labels
-- No duplicate feature names
-- At least one feature column required
-- Segment labels must be single characters
-- Segment labels should not contain tab characters
+A data frame with:
+- A `segment` column — one row per phoneme, labels are single Unicode characters.
+- One column per binary distinctive feature — values `0`, `1`, or `NA` (= not applicable).
 
-#### Output: Segment similarity matrix
+### Word list
 
-A TSV file with pairwise similarity scores for all segments.
+A character vector. Each word is a string of characters, every one of which must
+appear in the `segment` column of the feature matrix.
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `segment1` | string | First segment |
-| `segment2` | string | Second segment |
-| `similarity` | float | Similarity score between 0 and 1 |
+> **Digraphs** (e.g. `ng`, `th`) must be mapped to a single character before
+> use (e.g. `ng` → `N`).
 
-**Properties**
+## Using intermediate outputs
 
-- Contains all ordered pairs (segment1, segment2), including identical pairs
-- Similarity of a segment with itself is 1.0
-- Matrix is symmetric: similarity(a, b) = similarity(b, a)
-- Includes gap rows: similarity of any segment with `" "` (space) is 1.0
-
-**Similarity metric**
-
-Similarity is calculated using natural classes:
-
-```
-similarity = shared_classes / (shared_classes + non_shared_classes)
+```r
+nc  <- generate_natural_classes(features)
+sim <- compute_segment_similarity(features, nc)
 ```
 
-Where:
-- `shared_classes`: number of natural classes containing both segments
-- `non_shared_classes`: number of natural classes containing exactly one segment
+## Hungarian example
 
-**Example**
-
-```
-segment1	segment2	similarity
-p	p	1.0
-p	b	0.714
-p	t	0.5
-p	a	0.125
-a	 	1.0
+```r
+vignette("hungarian", package = "janet")
 ```
 
----
+Bundled data in `inst/extdata/` includes the Siptár-Törkenczy Hungarian feature
+matrix and a 305-word verb-stem list.
 
-### Step 2: Phonological distance between words
+## Downstream use
 
-#### Input: Word list
-
-A tab-separated file containing words to align.
-
-| Requirement | Detail |
-|-------------|--------|
-| Format | TSV (tab-delimited) |
-| Encoding | UTF-8 |
-| Header row | Required |
-| Required column | `lemma` |
-
-**Lemma column**
-
-- Each row is one word form
-- Words must be transcribed in the same alphabet as the segment feature matrix
-- Each character in a word must exist in the segment similarity matrix
-- Duplicates are automatically removed
-
-**Example**
-
-```
-lemma
-pata
-bada
-kata
-apa
-```
-
-#### Input: Segment distance matrix
-
-The output of the segment similarity script. The aligner reads similarity and converts internally: `distance = 1 - similarity`.
-
-#### Output: Word distance matrix
-
-A tab-separated file containing pairwise phonological distances between all words.
-
-| Column | Type | Description |
-|--------|------|-------------|
-| `word1` | string | First word |
-| `word2` | string | Second word |
-| `phon_dist` | float | Total alignment distance |
-
-**Properties**
-
-- Matrix is symmetric: includes both (word1, word2) and (word2, word1)
-- Self-distances included: distance(word, word) = 0
-- Total rows: n² for n unique words
-- Output is gzip-compressed
-
-**Distance metric**
-
-Phonological distance is computed via Needleman-Wunsch alignment:
-
-- Substitution cost: segment distance from similarity matrix
-- Gap penalty: 1.0 (insertion or deletion)
-- Total distance: sum of costs along optimal alignment path
-
-**Example**
-
-```
-word1	word2	phon_dist
-pata	bada	0.572
-bada	pata	0.572
-pata	pata	0.0
-```
-
-**Parameters**
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| Gap penalty | 1.0 | Cost of inserting or deleting a segment |
-
-Currently hardcoded. A segment pair not found in the distance matrix defaults to distance 1.0.
-
----
-
-### Step 3: Kernel ridge regression (example)
-
-see [here](https://github.com/petyaracz/KRR)
-
----
-
-## Example: Hungarian -ik variation
-
-The repo includes a worked example using Hungarian verbal morphology. Some Hungarian verbs vary between -k/-m in 1sg.indef (for details, see Rácz & Lukács 2024). The example:
-
-- `source/siptar_torkenczy_toth_racz_hungarian.tsv`: Segmental feature matrix for Hungarian
-- `source/forms.tsv`: Word list for aligner
-
----
+Word distances can feed a kernel ridge regression model for morphological
+analogy tasks. See [petyaracz/KRR](https://github.com/petyaracz/KRR).
 
 ## Citation
-
-If you use JANET in your research, please cite:
-
-https://doi.org/10.5281/zenodo.17980463
 
 ```bibtex
 @software{racz_janet_2025,
   author = {Rácz, Péter},
-  title = {JANET: Joint Alignment and Nonparametric Estimation Toolkit},
-  year = {2025},
-  url = {https://github.com/petyaracz/JANET}
+  title  = {JANET: Joint Alignment and Nonparametric Estimation Toolkit},
+  year   = {2025},
+  url    = {https://github.com/petyaracz/JANET},
+  doi    = {10.5281/zenodo.17980463}
 }
 ```
 
----
+## References
 
-## Authors
+Frisch, S. A., Pierrehumbert, J. B., & Broe, M. B. (2004). Similarity
+avoidance and the OCP. *Natural Language & Linguistic Theory*, 22(1), 179–228.
 
-Péter Rácz
+Dawdy-Hesterberg, L. G., & Pierrehumbert, J. B. (2014). Learnability and
+generalisation of Arabic broken plural nouns. *Language, Cognition and
+Neuroscience*, 29(10), 1268–1282.
 
----
+Rácz, P., & Lukács, Á. (2024). Variation in the 1sg. indef: More than you
+wanted to know. *Acta Linguistica Academica*, 71(1–2), 2–17.
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-## References
-
-Albright, Adam, and Bruce Hayes. "Rules vs. analogy in English past tenses: A computational/experimental study." Cognition 90, no. 2 (2003): 119-161.
-
-Frisch, Stefan A., Janet B. Pierrehumbert, and Michael B. Broe. "Similarity avoidance and the OCP." *Natural Language & Linguistic Theory* 22, no. 1 (2004): 179-228.
-
-Dawdy-Hesterberg, Lisa Garnand, and Janet Breckenridge Pierrehumbert. "Learnability and generalisation of Arabic broken plural nouns." *Language, Cognition and Neuroscience* 29, no. 10 (2014): 1268-1282.
-
-Siptár, Péter, and Miklós Törkenczy. The phonology of Hungarian. OUP Oxford, 2000.
-
-Rácz, Péter, Clay Beckner, Jennifer B. Hay, and Janet B. Pierrehumbert. "Morphological convergence as on-line lexical analogy." *Language* 96, no. 4 (2020): 735-770.
-
-Rácz, Péter, and Ágnes Lukács. "Variation in the 1sg. indef: More than you wanted to know." *Acta Linguistica Academica* 71, no. 1-2 (2024): 2-17.
+MIT. See [LICENSE](LICENSE).
